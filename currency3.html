@@ -1,0 +1,84 @@
+<!DOCTYPE>
+<html lang="en">
+  <head>
+    <title>Конвертер валют</title>
+	<script>
+	  document.addEventListener('DOMContentLoaded', function() {
+	    var myHeaders = new Headers();
+		myHeaders.append("apikey", "NXVfW28R5WGHpgoj8QG7ocYtEvLV167v");
+	  
+	    var requestOptions = {
+		  method: 'GET',
+		  redirect: 'follow',
+		  headers: myHeaders
+	    };
+        
+		
+	  
+	  
+      document.querySelector('form').onsubmit = function() {
+	    const v1 = "https://api.apilayer.com/exchangerates_data/latest?base="
+	    const v2 = document.querySelector('#currency1').value.toUpperCase();
+		
+	    //fetch("https://api.apilayer.com/exchangerates_data/latest?base=EUR", requestOptions)
+		fetch(v1+v2, requestOptions)
+		.then(response => response.text())
+		.then(result =>  {
+	      
+		  const currency = document.querySelector('#currency').value.toUpperCase();
+		  
+		  
+		  if (document.querySelector('#j').value.length >= 1) {
+		    var q = document.querySelector('#j').value
+		  } else {
+			  var q = 1
+		  }
+		  
+		  let userjs = JSON.parse(result);
+		  
+		  console.log(userjs);
+		  let r = (userjs.rates[currency]);
+		  
+		  if (r!== undefined){
+		    document.querySelector('#result').innerHTML = `${q} ${v2} is equal to ${ (r*q).toFixed(3) } ${currency}.`;
+		  }
+		  else {
+		    document.querySelector('#result').innerHTML = `Invalid currency.`;
+		  }
+		  
+		  console.log(r);
+		  //document.querySelector('body').innerHTML = `1 USD is equal to ${r.toFixed(3)} UAH.`;
+		
+	    })
+		
+		.catch(error => 
+		  console.log('error', error));
+	  
+	    return false;
+	  }
+	  
+	  
+	  // console.log(result.rates))
+	  
+	});
+	    //ma
+	    //const rate = data.rates.EUR;
+	    //document.querySelector('body').innerHTML = rate;
+	  
+	  
+	</script>
+  </head>
+  <body>
+     <h1>Конвертер валют :)</h1>
+	 <h4>Будь-ласка, оберіть валюти:</h4>
+     <form>
+	   <input id="j" placeholder="Значення" type="text">
+	   <input id="currency1" placeholder="Валюта 1" type="text">
+	   <input id="currency" placeholder="Валюта 2" type="text">
+	   <input type="submit" value="Підтвердити">
+	 </form>
+	 <div id="result">
+	   
+	 </div>
+  </body>
+</html>
